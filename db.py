@@ -25,7 +25,7 @@ BOT_TOKEN = os.getenv("BOT_TOKEN", "SIZNING_BOT_TOKEN_BU_YERGA")
 # Birinchi (bosh) admin - botni ishga tushirgan odam. Bu ID doim admin bo'lib qoladi.
 OWNER_ID = int(os.getenv("OWNER_ID", "0"))
 
-bot = Bot(token=BOT_TOKEN)
+bot = Bot(8948791881:AAHWiUQWqmNBuUrhV5Cc8HUd73ro7YR7sXw)
 dp = Dispatcher(storage=MemoryStorage())
 
 
