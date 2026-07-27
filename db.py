@@ -20,12 +20,13 @@ import db
 
 logging.basicConfig(level=logging.INFO)
 
-# ---------- SOZLAMALAR ----------
-BOT_TOKEN = os.getenv("8948791881:AAHWiUQWqmNBuUrhV5Cc8HUd73ro7YR7sXw")
+# ---------- SOZLAMALAR ----
+# 24-qatorni shunday qiling:
+BOT_TOKEN = "8948791881:AAHWiUQWqmNBuUrhV5Cc8HUd73ro7YR7sXw"
 # Birinchi (bosh) admin - botni ishga tushirgan odam. Bu ID doim admin bo'lib qoladi.
 OWNER_ID = int(os.getenv("OWNER_ID", "0"))
-
-bot = Bot("8948791881:AAHWiUQWqmNBuUrhV5Cc8HUd73ro7YR7sXw")
+# 28-qatorni shunday qoldiring (to'g'ri):
+bot = Bot(BOT_TOKEN)
 dp = Dispatcher(storage=MemoryStorage())
 
 
