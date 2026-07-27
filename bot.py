@@ -21,7 +21,7 @@ import db
 logging.basicConfig(level=logging.INFO)
 
 # ---------- SOZLAMALAR ----------
-BOT_TOKEN = os.getenv("BOT_TOKEN", "8948791881:AAHWiUQWqmNBuUrhV5Cc8HUd73ro7YR7sXw")
+BOT_TOKEN = os.getenv("BOT_TOKEN", "SIZNING_BOT_TOKEN_BU_YERGA")
 # Birinchi (bosh) admin - botni ishga tushirgan odam. Bu ID doim admin bo'lib qoladi.
 OWNER_ID = int(os.getenv("OWNER_ID", "0"))
 
@@ -37,6 +37,18 @@ class Broadcast(StatesGroup):
 class AdminManage(StatesGroup):
     waiting_new_admin_id = State()
     waiting_remove_admin_id = State()
+
+
+# Menyu tugmalari matnlari - agar foydalanuvchi biror amal davomida
+# (masalan ID kutilayotganda) shu tugmalardan birini bossa, bot "qotib qolmasligi"
+# uchun avtomatik bekor qilib, yangi amalga o'tadi.
+MENU_TEXTS = {
+    "📢 Xabar yuborish",
+    "📋 Guruhlar ro'yxati",
+    "🧑‍💼 Adminlar",
+    "➕ Admin qo'shish",
+    "➖ Admin o'chirish",
+}
 
 
 # ---------- KLAVIATURALAR ----------
@@ -152,6 +164,10 @@ async def ask_new_admin(message: Message, state: FSMContext):
 
 @dp.message(AdminManage.waiting_new_admin_id)
 async def save_new_admin(message: Message, state: FSMContext):
+    if message.text in MENU_TEXTS:
+        await state.clear()
+        await message.answer("Bekor qilindi.", reply_markup=main_menu_kb())
+        return
     if not message.text or not message.text.strip().isdigit():
         await message.answer("❌ Iltimos, faqat raqamdan iborat ID yuboring.")
         return
@@ -176,6 +192,10 @@ async def ask_remove_admin(message: Message, state: FSMContext):
 
 @dp.message(AdminManage.waiting_remove_admin_id)
 async def save_remove_admin(message: Message, state: FSMContext):
+    if message.text in MENU_TEXTS:
+        await state.clear()
+        await message.answer("Bekor qilindi.", reply_markup=main_menu_kb())
+        return
     if not message.text or not message.text.strip().isdigit():
         await message.answer("❌ Iltimos, faqat raqamdan iborat ID yuboring.")
         return
@@ -203,6 +223,10 @@ async def ask_broadcast_text(message: Message, state: FSMContext):
 
 @dp.message(Broadcast.waiting_text)
 async def preview_broadcast(message: Message, state: FSMContext):
+    if message.text in MENU_TEXTS:
+        await state.clear()
+        await message.answer("Bekor qilindi.", reply_markup=main_menu_kb())
+        return
     await state.update_data(text=message.html_text)
     groups = await db.get_all_groups()
     await message.answer(
@@ -254,3 +278,4 @@ async def main():
 
 if __name__ == "__main__":
     asyncio.run(main())
+        
