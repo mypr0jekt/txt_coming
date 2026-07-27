@@ -4,6 +4,7 @@ DB_PATH = "bot.db"
 
 
 async def init_db():
+    """Bazani va kerakli jadvallarni yaratadi (birinchi ishga tushirishda)."""
     async with aiosqlite.connect(DB_PATH) as db:
         await db.execute(
             """
@@ -23,6 +24,8 @@ async def init_db():
         )
         await db.commit()
 
+
+# ---------- ADMINLAR ----------
 
 async def add_admin(user_id: int, full_name: str = ""):
     async with aiosqlite.connect(DB_PATH) as db:
@@ -54,6 +57,8 @@ async def get_all_admins():
         return await cursor.fetchall()
 
 
+# ---------- GURUHLAR ----------
+
 async def add_group(chat_id: int, title: str):
     async with aiosqlite.connect(DB_PATH) as db:
         await db.execute(
@@ -73,3 +78,4 @@ async def get_all_groups():
     async with aiosqlite.connect(DB_PATH) as db:
         cursor = await db.execute("SELECT chat_id, title FROM groups")
         return await cursor.fetchall()
+        
