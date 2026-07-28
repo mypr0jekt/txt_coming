@@ -22,7 +22,7 @@ import db
 logging.basicConfig(level=logging.INFO)
 
 # ---------- SOZLAMALAR ----------
-BOT_TOKEN = os.getenv("BOT_TOKEN", "8948791881:AAHWiUQWqmNBuUrhV5Cc8HUd73ro7YR7sXw")
+BOT_TOKEN = os.getenv("BOT_TOKEN", "SIZNING_BOT_TOKEN_BU_YERGA")
 # Birinchi (bosh) admin - botni ishga tushirgan odam. Bu ID doim admin bo'lib qoladi.
 OWNER_ID = int(os.getenv("OWNER_ID", "0"))
 
@@ -301,4 +301,3 @@ async def main():
 
 if __name__ == "__main__":
     asyncio.run(main())
-    
