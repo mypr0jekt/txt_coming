@@ -14,6 +14,7 @@ from aiogram.types import (
     InlineKeyboardMarkup,
     InlineKeyboardButton,
     CallbackQuery,
+    ChatMemberUpdated,
 )
 
 import db
@@ -101,7 +102,29 @@ async def cmd_start(message: Message):
     )
 
 
-# ---------- BOT GURUHGA QO'SHILGANDA / CHIQARILGANDA ----------
+# ---------- BOT GURUHGA/KANALGA QO'SHILGANDA / CHIQARILGANDA ----------
+# Guruhlar uchun Telegram odatda 'new_chat_members' xabarini yuboradi,
+# lekin KANALLAR uchun bu ishlamaydi - ular faqat 'my_chat_member' eventini yuboradi.
+# Shu sababli ikkalasini ham ushlaymiz, guruh va kanal bir xil ishlashi uchun.
+@dp.my_chat_member()
+async def on_my_chat_member(update: ChatMemberUpdated):
+    new_status = update.new_chat_member.status
+
+    if new_status in ("member", "administrator"):
+        await db.add_group(update.chat.id, update.chat.title or "Noma'lum")
+        for admin_id, _ in await db.get_all_admins():
+            try:
+                await bot.send_message(
+                    admin_id,
+                    f"✅ Yangi guruh/kanalga qo'shildim: {update.chat.title}",
+                )
+            except Exception:
+                pass
+
+    elif new_status in ("left", "kicked"):
+        await db.remove_group(update.chat.id)
+
+
 @dp.message(F.new_chat_members)
 async def on_bot_added(message: Message):
     for member in message.new_chat_members:
@@ -278,4 +301,4 @@ async def main():
 
 if __name__ == "__main__":
     asyncio.run(main())
-        
+    
